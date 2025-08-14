@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { CartProvider } from "./context/CartContext";
 import Header from "./components/Header";
+import Hero from "./components/Hero";
 import Categories from "./components/Categories";
 import Products from "./components/Products";
 import ProductView from "./components/ProductView";
@@ -23,6 +24,7 @@ function App() {
       <Router>
         <div className="app">
           <Header />
+          <Hero />
           <main className="main">
             <Routes>
               <Route path="/" element={<HomePage />} />

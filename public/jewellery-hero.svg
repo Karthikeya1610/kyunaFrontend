@@ -1,0 +1,41 @@
+<svg width="800" height="600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8f9fa;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e9ecef;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#d4af37;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#b8860b;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="800" height="600" fill="url(#bg)"/>
+  
+  <!-- Necklace -->
+  <ellipse cx="400" cy="250" rx="120" ry="80" fill="none" stroke="url(#gold)" stroke-width="3"/>
+  <circle cx="400" cy="170" r="15" fill="url(#gold)"/>
+  <circle cx="400" cy="330" r="15" fill="url(#gold)"/>
+  <circle cx="320" cy="250" r="15" fill="url(#gold)"/>
+  <circle cx="480" cy="250" r="15" fill="url(#gold)"/>
+  
+  <!-- Ring -->
+  <ellipse cx="300" cy="400" rx="25" ry="15" fill="none" stroke="url(#gold)" stroke-width="4"/>
+  <circle cx="300" cy="400" r="8" fill="url(#gold)"/>
+  
+  <!-- Earrings -->
+  <circle cx="200" cy="200" r="12" fill="url(#gold)"/>
+  <circle cx="600" cy="200" r="12" fill="url(#gold)"/>
+  
+  <!-- Decorative elements -->
+  <g fill="url(#gold)" opacity="0.6">
+    <circle cx="150" cy="150" r="3"/>
+    <circle cx="650" cy="150" r="3"/>
+    <circle cx="150" cy="450" r="3"/>
+    <circle cx="650" cy="450" r="3"/>
+  </g>
+  
+  <text x="400" y="520" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" fill="#6c757d">
+    Kyuna Jewellery Collection
+  </text>
+</svg>

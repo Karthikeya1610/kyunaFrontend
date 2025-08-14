@@ -1,0 +1,191 @@
+.hero {
+  position: relative;
+  min-height: 600px;
+  width: 100%;
+  background: #1a1a1a;
+  display: flex;
+  align-items: center;
+
+  &__container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 3rem 2rem;
+    width: 100%;
+    gap: 4rem;
+  }
+
+  &__content {
+    flex: 1;
+    max-width: 600px;
+    color: white;
+  }
+
+  &__text-section {
+    width: 100%;
+  }
+
+  &__main-text {
+    padding-right: 1rem;
+  }
+
+  &__title {
+    margin-bottom: 2rem;
+
+    .hero__brand {
+      display: block;
+      font-size: 4rem;
+      font-weight: 900;
+      color: #ffd700;
+      margin-bottom: 0.5rem;
+      text-shadow: 0 0 25px rgba(255, 215, 0, 0.6);
+      line-height: 1.1;
+    }
+
+    .hero__subtitle {
+      display: block;
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      line-height: 1.2;
+    }
+  }
+
+  &__quote {
+    font-size: 1.4rem;
+    font-style: italic;
+    color: #f0f0f0;
+    margin-bottom: 2.5rem;
+    line-height: 1.6;
+    position: relative;
+    padding-left: 2.5rem;
+    font-weight: 500;
+
+    &::before {
+      content: '"';
+      font-size: 3.5rem;
+      color: #ffd700;
+      position: absolute;
+      top: -0.8rem;
+      left: -1.5rem;
+      font-family: serif;
+      text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+    }
+  }
+
+  &__cta {
+    background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+    color: #1a1a1a;
+    border: none;
+    padding: 1.2rem 3rem;
+    font-size: 1.2rem;
+    font-weight: 800;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    border: 2px solid rgba(255, 215, 0, 0.3);
+
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(255, 215, 0, 0.6);
+      background: linear-gradient(135deg, #ffed4e 0%, #ffd700 100%);
+      border-color: rgba(255, 215, 0, 0.6);
+    }
+  }
+
+  &__image-section {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 700px;
+  }
+
+  &__jewellery-image {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+
+  &__image {
+    width: 100%;
+    max-width: 650px;
+    height: auto;
+    border-radius: 16px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    border: 3px solid rgba(255, 215, 0, 0.2);
+    transition: all 0.3s ease;
+    filter: brightness(1.05) contrast(1.05);
+
+    &:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6);
+      border-color: rgba(255, 215, 0, 0.4);
+    }
+  }
+}
+
+// Responsive design
+@media (max-width: 1024px) {
+  .hero {
+    &__container {
+      flex-direction: column;
+      text-align: center;
+      gap: 3rem;
+      padding: 2rem 1rem;
+    }
+
+    &__content {
+      max-width: 100%;
+      order: 1;
+    }
+
+    &__image-section {
+      max-width: 100%;
+      order: 2;
+    }
+
+    &__main-text {
+      padding-right: 0;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .hero {
+    min-height: 500px;
+
+    &__title {
+      .hero__brand {
+        font-size: 2.5rem;
+      }
+
+      .hero__subtitle {
+        font-size: 1.8rem;
+      }
+    }
+
+    &__quote {
+      font-size: 1.1rem;
+      padding-left: 1.5rem;
+    }
+
+    &__cta {
+      padding: 0.8rem 2rem;
+      font-size: 1rem;
+    }
+
+    &__image {
+      max-width: 450px;
+    }
+  }
+}

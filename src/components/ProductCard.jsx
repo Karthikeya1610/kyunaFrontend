@@ -1,60 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
+import ImageModal from "./ImageModal";
 import "./ProductCard.scss";
 
 const ProductCard = ({ product }) => {
-  const { name, price, discountPrice, rating, image, imageAlt } = product;
+  const { name, images, price, discountPrice } = product;
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const renderStars = (rating) => {
-    const stars = [];
-    const fullStars = Math.floor(rating);
-    const hasHalfStar = rating % 1 !== 0;
-
-    for (let i = 0; i < fullStars; i++) {
-      stars.push(
-        <span key={i} className="product-card__star product-card__star--full">
-          ★
-        </span>
-      );
-    }
-
-    if (hasHalfStar) {
-      stars.push(
-        <span
-          key="half"
-          className="product-card__star product-card__star--half"
-        >
-          ☆
-        </span>
-      );
-    }
-
-    const emptyStars = 5 - Math.ceil(rating);
-    for (let i = 0; i < emptyStars; i++) {
-      stars.push(
-        <span
-          key={`empty-${i}`}
-          className="product-card__star product-card__star--empty"
-        >
-          ☆
-        </span>
-      );
-    }
-
-    return stars;
-  };
+  // Get the first image from the images array
+  const image = images && images.length > 0 ? images[0].url : null;
+  const imageAlt = name || "Product Image";
 
   const hasDiscount = discountPrice && discountPrice < price;
-  const discountPercentage = hasDiscount
-    ? Math.round(((price - discountPrice) / price) * 100)
-    : 0;
 
   return (
     <div className="product-card">
-      <div className="product-card__image-container">
+      <div
+        className="product-card__image-container"
+        onClick={() => setIsModalOpen(true)}
+      >
         <img
           src={image}
           alt={imageAlt}
           className="product-card__image"
+          style={{ cursor: "pointer" }}
           onError={(e) => {
             e.target.style.display = "none";
             e.target.nextSibling.style.display = "flex";
@@ -71,30 +39,38 @@ const ProductCard = ({ product }) => {
       <div className="product-card__content">
         <h3 className="product-card__name">{name}</h3>
 
-        <div className="product-card__rating">
-          <div className="product-card__stars">{renderStars(rating)}</div>
-          <span className="product-card__rating-text">{rating}/5</span>
-        </div>
-
         <div className="product-card__price">
           {hasDiscount ? (
             <>
               <div className="product-card__price-row">
                 <span className="product-card__currency">₹</span>
                 <span className="product-card__amount product-card__amount--discount">
-                  {discountPrice}
+                  {discountPrice?.toLocaleString()}
                 </span>
-                <span className="product-card__original-price">₹{price}</span>
+                <span className="product-card__original-price">
+                  ₹{price?.toLocaleString()}
+                </span>
               </div>
             </>
           ) : (
             <>
               <span className="product-card__currency">₹</span>
-              <span className="product-card__amount">{price}</span>
+              <span className="product-card__amount">
+                {price?.toLocaleString()}
+              </span>
             </>
           )}
         </div>
       </div>
+
+      {/* Image Modal */}
+      <ImageModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        images={images || []}
+        currentImageIndex={0}
+        onImageChange={() => {}}
+      />
     </div>
   );
 };

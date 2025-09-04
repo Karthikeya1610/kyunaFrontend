@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Button from "./Button";
 import Rating from "./Rating";
-import { getProductById } from "../data/products";
+import ImageModal from "./ImageModal";
+import Context from "../context/context";
 import { useCart } from "../context/CartContext";
 import "./ProductView.scss";
 
@@ -10,10 +11,31 @@ const ProductView = () => {
   const { productId } = useParams();
   const navigate = useNavigate();
   const { addToCart } = useCart();
+  const { itemsId, loading, getItemsId } = useContext(Context);
   const [selectedImage, setSelectedImage] = useState(0);
   const [activeTab, setActiveTab] = useState("description");
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const product = getProductById(productId);
+  useEffect(() => {
+    if (productId) {
+      getItemsId(productId);
+    }
+  }, [productId]);
+
+  const product = itemsId?.item || itemsId;
+
+  // Show loading state
+  if (loading) {
+    return (
+      <div className="product-view">
+        <div className="product-view__container">
+          <div className="product-view__loading">
+            <h2>Loading product...</h2>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   // If product not found, show error or redirect
   if (!product) {
@@ -32,22 +54,36 @@ const ProductView = () => {
     );
   }
 
+  // Set default values for missing data
+  const productWithDefaults = {
+    ...product,
+    rating: product.rating || 5,
+    totalReviews: product.totalReviews || 0,
+    description: product.description || "No description available",
+    availability: product.availability || "In Stock",
+    ratingBreakdown: product.ratingBreakdown || {},
+    specifications: product.specifications || {},
+  };
+
   const hasDiscount =
-    product.discountPrice && product.discountPrice < product.price;
+    productWithDefaults.discountPrice &&
+    productWithDefaults.discountPrice < productWithDefaults.price;
   const discountPercentage = hasDiscount
     ? Math.round(
-        ((product.price - product.discountPrice) / product.price) * 100
+        ((productWithDefaults.price - productWithDefaults.discountPrice) /
+          productWithDefaults.price) *
+          100
       )
     : 0;
 
   const handleAddToCart = () => {
-    addToCart(product);
+    addToCart(productWithDefaults);
     // You could add a toast notification here
-    console.log(`${product.name} added to cart!`);
+    console.log(`${productWithDefaults.name} added to cart!`);
   };
 
   const handleBuyNow = () => {
-    addToCart(product);
+    addToCart(productWithDefaults);
     navigate("/cart");
   };
 
@@ -63,19 +99,21 @@ const ProductView = () => {
       case "description":
         return (
           <div className="product-view__tab-content">
-            <p>{product.description}</p>
+            <p>{productWithDefaults.description}</p>
           </div>
         );
       case "specifications":
         return (
           <div className="product-view__tab-content">
             <div className="product-view__specs">
-              {Object.entries(product.specifications).map(([key, value]) => (
-                <div key={key} className="product-view__spec-row">
-                  <span className="product-view__spec-label">{key}:</span>
-                  <span className="product-view__spec-value">{value}</span>
-                </div>
-              ))}
+              {Object.entries(productWithDefaults.specifications).map(
+                ([key, value]) => (
+                  <div key={key} className="product-view__spec-row">
+                    <span className="product-view__spec-label">{key}:</span>
+                    <span className="product-view__spec-value">{value}</span>
+                  </div>
+                )
+              )}
             </div>
           </div>
         );
@@ -83,10 +121,10 @@ const ProductView = () => {
         return (
           <div className="product-view__tab-content">
             <Rating
-              rating={product.rating}
-              totalReviews={product.totalReviews}
+              rating={productWithDefaults.rating}
+              totalReviews={productWithDefaults.totalReviews}
               showBreakdown={true}
-              breakdown={product.ratingBreakdown}
+              breakdown={productWithDefaults.ratingBreakdown}
             />
           </div>
         );
@@ -121,43 +159,55 @@ const ProductView = () => {
           <span className="product-view__separator">/</span>
           <span>Products</span>
           <span className="product-view__separator">/</span>
-          <span className="product-view__current">{product.name}</span>
+          <span className="product-view__current">
+            {productWithDefaults.name}
+          </span>
         </div>
 
         <div className="product-view__main">
           {/* Left Side - Image Gallery */}
           <div className="product-view__gallery">
-            <div className="product-view__main-image">
+            <div
+              className="product-view__main-image"
+              onClick={() => setIsModalOpen(true)}
+            >
               <img
-                src={product.images[selectedImage]}
-                alt={product.name}
+                src={
+                  productWithDefaults.images &&
+                  productWithDefaults.images[selectedImage]
+                    ? productWithDefaults.images[selectedImage].url
+                    : ""
+                }
+                alt={productWithDefaults.name}
                 className="product-view__image"
+                style={{ cursor: "pointer" }}
               />
             </div>
             <div className="product-view__thumbnails">
-              {product.images.map((image, index) => (
-                <div
-                  key={index}
-                  className={`product-view__thumbnail ${
-                    selectedImage === index
-                      ? "product-view__thumbnail--active"
-                      : ""
-                  }`}
-                  onClick={() => setSelectedImage(index)}
-                >
-                  <img
-                    src={image}
-                    alt={`${product.name} view ${index + 1}`}
-                    className="product-view__thumbnail-image"
-                  />
-                </div>
-              ))}
+              {productWithDefaults.images &&
+                productWithDefaults.images.map((image, index) => (
+                  <div
+                    key={index}
+                    className={`product-view__thumbnail ${
+                      selectedImage === index
+                        ? "product-view__thumbnail--active"
+                        : ""
+                    }`}
+                    onClick={() => setSelectedImage(index)}
+                  >
+                    <img
+                      src={image.url}
+                      alt={`${productWithDefaults.name} view ${index + 1}`}
+                      className="product-view__thumbnail-image"
+                    />
+                  </div>
+                ))}
             </div>
           </div>
 
           {/* Right Side - Product Details */}
           <div className="product-view__details">
-            <h1 className="product-view__title">{product.name}</h1>
+            <h1 className="product-view__title">{productWithDefaults.name}</h1>
 
             {/* Price Section */}
             <div className="product-view__price">
@@ -166,10 +216,10 @@ const ProductView = () => {
                   <div className="product-view__price-row">
                     <span className="product-view__currency">₹</span>
                     <span className="product-view__amount product-view__amount--discount">
-                      {product.discountPrice}
+                      {productWithDefaults.discountPrice?.toLocaleString()}
                     </span>
                     <span className="product-view__original-price">
-                      ₹{product.price}
+                      ₹{productWithDefaults.price?.toLocaleString()}
                     </span>
                     <span className="product-view__discount-badge">
                       -{discountPercentage}% off
@@ -179,7 +229,9 @@ const ProductView = () => {
               ) : (
                 <div className="product-view__price-row">
                   <span className="product-view__currency">₹</span>
-                  <span className="product-view__amount">{product.price}</span>
+                  <span className="product-view__amount">
+                    {productWithDefaults.price?.toLocaleString()}
+                  </span>
                 </div>
               )}
             </div>
@@ -187,15 +239,15 @@ const ProductView = () => {
             {/* Availability */}
             <div className="product-view__availability">
               <span className="product-view__availability-text">
-                {product.availability}
+                {productWithDefaults.availability}
               </span>
             </div>
 
             {/* Rating */}
             <div className="product-view__rating">
               <Rating
-                rating={product.rating}
-                totalReviews={product.totalReviews}
+                rating={productWithDefaults.rating}
+                totalReviews={productWithDefaults.totalReviews}
               />
             </div>
 
@@ -245,6 +297,15 @@ const ProductView = () => {
           {renderTabContent()}
         </div>
       </div>
+
+      {/* Image Modal */}
+      <ImageModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        images={productWithDefaults.images || []}
+        currentImageIndex={selectedImage}
+        onImageChange={setSelectedImage}
+      />
     </div>
   );
 };

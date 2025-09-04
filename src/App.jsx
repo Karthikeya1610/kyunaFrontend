@@ -7,6 +7,8 @@ import Categories from "./components/Categories";
 import Products from "./components/Products";
 import ProductView from "./components/ProductView";
 import Cart from "./components/Cart";
+import Login from "./components/Login";
+import Register from "./components/Register";
 import "./App.scss";
 
 function HomePage() {
@@ -24,14 +26,37 @@ function App() {
       <Router>
         <div className="app">
           <Header />
-          <Hero />
-          <main className="main">
-            <Routes>
-              <Route path="/" element={<HomePage />} />
-              <Route path="/product/:productId" element={<ProductView />} />
-              <Route path="/cart" element={<Cart />} />
-            </Routes>
-          </main>
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <>
+                  <Hero />
+                  <main className="main">
+                    <HomePage />
+                  </main>
+                </>
+              }
+            />
+            <Route
+              path="/product/:productId"
+              element={
+                <main className="main">
+                  <ProductView />
+                </main>
+              }
+            />
+            <Route
+              path="/cart"
+              element={
+                <main className="main">
+                  <Cart />
+                </main>
+              }
+            />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+          </Routes>
         </div>
       </Router>
     </CartProvider>

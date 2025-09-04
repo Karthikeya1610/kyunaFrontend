@@ -24,12 +24,6 @@ const Header = () => {
               <div className="header__logo-icon">💎</div>
               <span className="header__logo-text">Kyuna</span>
             </div>
-
-            <div className="header__address">
-              <span className="header__address-text">
-                📍 123 Jewelry Street, Diamond District, Mumbai 400001
-              </span>
-            </div>
           </div>
         </div>
 
@@ -45,7 +39,12 @@ const Header = () => {
         </div>
 
         <div className="header__right">
-          <button className="header__signin-btn">Sign in</button>
+          <button
+            className="header__signin-btn"
+            onClick={() => navigate("/login")}
+          >
+            Sign in
+          </button>
 
           <button className="header__cart-btn" onClick={handleCartClick}>
             🛒

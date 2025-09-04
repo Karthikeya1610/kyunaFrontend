@@ -14,6 +14,38 @@
     gap: 1.5rem;
     align-items: start;
   }
+
+  &__loading {
+    text-align: center;
+    padding: 2rem;
+    color: #6c757d;
+    font-size: 1.1rem;
+  }
+
+  &__loading-more {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 2rem;
+    color: #6c757d;
+    font-size: 1rem;
+  }
+
+  &__end {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 2rem;
+    color: #28a745;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  &__empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 3rem;
+    color: #6c757d;
+    font-size: 1.1rem;
+  }
 }
 
 @media (max-width: 1200px) {

@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 import "./Login.scss";
 
-const Login = () => {
-  const navigate = useNavigate();
+const Login = ({ onSuccess, onClose, onSwitchToRegister }) => {
+  const { login, loading, error, clearError } = useAuth();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -44,24 +44,35 @@ const Login = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (validateForm()) {
-      // Here you would typically make an API call to authenticate
-      console.log("Login attempt:", formData);
-      // For now, just navigate to home page
-      navigate("/");
+      clearError();
+      const result = await login(formData.email, formData.password);
+
+      if (result.success) {
+        onSuccess();
+      }
     }
   };
 
   return (
-    <div className="login">
-      <div className="login__container">
+    <div className="login-modal" onClick={onClose}>
+      <div
+        className="login-modal__content"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <button className="login-modal__close" onClick={onClose}>
+          ×
+        </button>
+
         <div className="login__header">
           <h1 className="login__title">Welcome Back</h1>
           <p className="login__subtitle">Sign in to your Kyuna account</p>
         </div>
+
+        {error && <div className="login__error-message">{error}</div>}
 
         <form className="login__form" onSubmit={handleSubmit}>
           <div className="login__form-group">
@@ -112,17 +123,25 @@ const Login = () => {
             </label>
           </div>
 
-          <button type="submit" className="login__submit-btn">
-            Sign In
+          <button
+            type="submit"
+            className="login__submit-btn"
+            disabled={loading}
+          >
+            {loading ? "Signing In..." : "Sign In"}
           </button>
         </form>
 
         <div className="login__footer">
           <p className="login__text">
             Don't have an account?{" "}
-            <Link to="/register" className="login__link">
+            <button
+              type="button"
+              onClick={onSwitchToRegister}
+              className="login__link"
+            >
               Create account
-            </Link>
+            </button>
           </p>
         </div>
       </div>

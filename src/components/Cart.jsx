@@ -1,12 +1,14 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
+import { useAuth } from "../context/AuthContext";
 import Button from "./Button";
 import "./Cart.scss";
 
 const Cart = () => {
   const navigate = useNavigate();
   const { items, removeFromCart, updateQuantity, getCartTotal } = useCart();
+  const { isAuthenticated, user } = useAuth();
 
   const handleQuantityChange = (productId, newQuantity) => {
     updateQuantity(productId, newQuantity);
@@ -17,8 +19,11 @@ const Cart = () => {
   };
 
   const handleCheckout = () => {
-    // In a real app, this would redirect to checkout
-    console.log("Proceeding to checkout...");
+    if (!isAuthenticated) {
+      navigate("/login");
+      return;
+    }
+    navigate("/checkout");
   };
 
   if (items.length === 0) {
@@ -50,6 +55,14 @@ const Cart = () => {
         {/* Cart Title */}
         <div className="cart__header">
           <h1>Shopping Cart ({items.length})</h1>
+          {isAuthenticated && user && (
+            <div className="cart__user-info">
+              <p>
+                Welcome, <strong>{user.name}</strong>
+              </p>
+              <p className="cart__user-email">{user.email}</p>
+            </div>
+          )}
         </div>
 
         <div className="cart__main">
@@ -58,7 +71,14 @@ const Cart = () => {
             {items.map((item) => (
               <div key={item.id} className="cart__item">
                 <div className="cart__item-image">
-                  <img src={item.image} alt={item.name} />
+                  <img
+                    src={
+                      item.images && item.images.length > 0
+                        ? item.images[0].url
+                        : item.image
+                    }
+                    alt={item.name}
+                  />
                 </div>
 
                 <div className="cart__item-details">
@@ -69,7 +89,7 @@ const Cart = () => {
                 <div className="cart__item-price">
                   <span className="cart__item-currency">₹</span>
                   <span className="cart__item-amount">
-                    {item.discountPrice || item.price}
+                    {(item.discountPrice || item.price)?.toLocaleString()}
                   </span>
                 </div>
 
@@ -77,7 +97,10 @@ const Cart = () => {
                   <button
                     className="cart__quantity-btn"
                     onClick={() =>
-                      handleQuantityChange(item.id, item.quantity - 1)
+                      handleQuantityChange(
+                        item._id || item.id,
+                        item.quantity - 1
+                      )
                     }
                     disabled={item.quantity <= 1}
                   >
@@ -87,7 +110,10 @@ const Cart = () => {
                   <button
                     className="cart__quantity-btn"
                     onClick={() =>
-                      handleQuantityChange(item.id, item.quantity + 1)
+                      handleQuantityChange(
+                        item._id || item.id,
+                        item.quantity + 1
+                      )
                     }
                   >
                     +
@@ -97,13 +123,15 @@ const Cart = () => {
                 <div className="cart__item-total">
                   <span className="cart__item-currency">₹</span>
                   <span className="cart__item-amount">
-                    {(item.discountPrice || item.price) * item.quantity}
+                    {(
+                      (item.discountPrice || item.price) * item.quantity
+                    )?.toLocaleString()}
                   </span>
                 </div>
 
                 <button
                   className="cart__remove-btn"
-                  onClick={() => handleRemoveItem(item.id)}
+                  onClick={() => handleRemoveItem(item._id || item.id)}
                   aria-label="Remove item"
                 >
                   ×
@@ -118,7 +146,7 @@ const Cart = () => {
 
             <div className="cart__summary-row">
               <span>Subtotal</span>
-              <span>₹{getCartTotal()}</span>
+              <span>₹{getCartTotal()?.toLocaleString()}</span>
             </div>
 
             <div className="cart__summary-row">
@@ -128,18 +156,16 @@ const Cart = () => {
 
             <div className="cart__summary-row">
               <span>Taxes</span>
-              <span className="cart__summary-calculated">
-                Calculated at checkout
-              </span>
+              <span className="cart__summary-free">Free</span>
             </div>
 
             <div className="cart__summary-row cart__summary-row--total">
               <span>Total</span>
-              <span>₹{getCartTotal()}</span>
+              <span>₹{getCartTotal()?.toLocaleString()}</span>
             </div>
 
             <p className="cart__summary-note">
-              Shipping costs will be calculated during checkout.
+              Shipping and taxes are free for all orders.
             </p>
 
             <Button
@@ -149,7 +175,7 @@ const Cart = () => {
               fullWidth
               className="cart__checkout-btn"
             >
-              Checkout
+              {isAuthenticated ? "Proceed to Checkout" : "Login to Checkout"}
             </Button>
           </div>
         </div>

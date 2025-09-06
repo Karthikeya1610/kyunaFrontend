@@ -10,7 +10,9 @@ const Products = () => {
   const { products, getItems } = useContext(Context);
 
   useEffect(() => {
-    getItems(1, false);
+    if (!products?.items) {
+      getItems(1, false);
+    }
   }, []);
 
   const fetchMoreData = () => {

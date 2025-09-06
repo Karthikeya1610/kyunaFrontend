@@ -36,6 +36,28 @@
     }
   }
 
+  &__user-info {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: #e3f2fd;
+    border-radius: 8px;
+    border-left: 4px solid #2196f3;
+
+    p {
+      margin: 0.25rem 0;
+      font-size: 0.9rem;
+    }
+
+    strong {
+      color: #1976d2;
+    }
+  }
+
+  &__user-email {
+    color: #666;
+    font-size: 0.85rem !important;
+  }
+
   &__main {
     display: grid;
     grid-template-columns: 2fr 1fr;
@@ -54,11 +76,20 @@
     grid-template-columns: auto 2fr auto auto auto auto;
     gap: 1.5rem;
     align-items: center;
-    padding: 1.5rem 0;
-    border-bottom: 1px solid #e9ecef;
+    padding: 1.5rem;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    background: #f8f9fa;
+    transition: all 0.3s ease;
+
+    &:hover {
+      border-color: #007bff;
+      box-shadow: 0 2px 8px rgba(0, 123, 255, 0.1);
+    }
 
     &:last-child {
-      border-bottom: none;
+      margin-bottom: 0;
     }
   }
 

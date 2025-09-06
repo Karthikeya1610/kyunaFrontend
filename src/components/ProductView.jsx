@@ -10,7 +10,7 @@ import "./ProductView.scss";
 const ProductView = () => {
   const { productId } = useParams();
   const navigate = useNavigate();
-  const { addToCart } = useCart();
+  const { addToCart, items, updateQuantity } = useCart();
   const { itemsId, loading, getItemsId } = useContext(Context);
   const [selectedImage, setSelectedImage] = useState(0);
   const [activeTab, setActiveTab] = useState("description");
@@ -23,6 +23,13 @@ const ProductView = () => {
   }, [productId]);
 
   const product = itemsId?.item || itemsId;
+
+  // Check if product is in cart and get its quantity
+  const cartItem = items.find(
+    (item) => (item._id || item.id) === (product?._id || product?.id)
+  );
+  const isInCart = !!cartItem;
+  const cartQuantity = cartItem?.quantity || 0;
 
   // Show loading state
   if (loading) {
@@ -85,6 +92,16 @@ const ProductView = () => {
   const handleBuyNow = () => {
     addToCart(productWithDefaults);
     navigate("/cart");
+  };
+
+  const handleIncreaseQuantity = () => {
+    const productId = productWithDefaults._id || productWithDefaults.id;
+    updateQuantity(productId, cartQuantity + 1);
+  };
+
+  const handleDecreaseQuantity = () => {
+    const productId = productWithDefaults._id || productWithDefaults.id;
+    updateQuantity(productId, cartQuantity - 1);
   };
 
   const tabs = [
@@ -253,14 +270,34 @@ const ProductView = () => {
 
             {/* Action Buttons */}
             <div className="product-view__actions">
-              <Button
-                variant="primary"
-                size="large"
-                fullWidth
-                onClick={handleAddToCart}
-              >
-                Add to Cart
-              </Button>
+              {!isInCart ? (
+                <Button
+                  variant="primary"
+                  size="large"
+                  fullWidth
+                  onClick={handleAddToCart}
+                >
+                  Add to Cart
+                </Button>
+              ) : (
+                <div className="product-view__quantity-controls">
+                  <button
+                    className="product-view__quantity-btn product-view__quantity-btn--decrease"
+                    onClick={handleDecreaseQuantity}
+                  >
+                    -
+                  </button>
+                  <span className="product-view__quantity-display">
+                    {cartQuantity}
+                  </span>
+                  <button
+                    className="product-view__quantity-btn product-view__quantity-btn--increase"
+                    onClick={handleIncreaseQuantity}
+                  >
+                    +
+                  </button>
+                </div>
+              )}
               <Button
                 variant="secondary"
                 size="large"
@@ -268,12 +305,6 @@ const ProductView = () => {
                 onClick={handleBuyNow}
               >
                 Buy Now
-              </Button>
-              <Button
-                variant="text"
-                onClick={() => console.log("Add to Wishlist")}
-              >
-                Add to Wishlist
               </Button>
             </div>
           </div>

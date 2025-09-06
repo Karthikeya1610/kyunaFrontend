@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { CartProvider } from "./context/CartContext";
 import { AuthProvider } from "./context/AuthContext";
 import { OrderProvider } from "./context/OrderContext";
+import { ContextState } from "./context/contextState";
 import Header from "./components/Header";
 import Hero from "./components/Hero";
 import Categories from "./components/Categories";
@@ -31,67 +32,69 @@ function App() {
     <AuthProvider>
       <CartProvider>
         <OrderProvider>
-          <Router>
-            <div className="app">
-              <Header />
-              <Routes>
-                <Route
-                  path="/"
-                  element={
-                    <>
-                      <Hero />
+          <ContextState>
+            <Router>
+              <div className="app">
+                <Header />
+                <Routes>
+                  <Route
+                    path="/"
+                    element={
+                      <>
+                        <Hero />
+                        <main className="main">
+                          <HomePage />
+                        </main>
+                      </>
+                    }
+                  />
+                  <Route
+                    path="/product/:productId"
+                    element={
                       <main className="main">
-                        <HomePage />
+                        <ProductView />
                       </main>
-                    </>
-                  }
-                />
-                <Route
-                  path="/product/:productId"
-                  element={
-                    <main className="main">
-                      <ProductView />
-                    </main>
-                  }
-                />
-                <Route
-                  path="/cart"
-                  element={
-                    <main className="main">
-                      <Cart />
-                    </main>
-                  }
-                />
-                <Route
-                  path="/checkout"
-                  element={
-                    <main className="main">
-                      <Checkout />
-                    </main>
-                  }
-                />
-                <Route
-                  path="/orders"
-                  element={
-                    <main className="main">
-                      <Orders />
-                    </main>
-                  }
-                />
-                <Route
-                  path="/orders/:orderId/cancel"
-                  element={
-                    <main className="main">
-                      <OrderCancel />
-                    </main>
-                  }
-                />
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="/register" element={<RegisterPage />} />
-                <Route path="/profile" element={<ProfileSettings />} />
-              </Routes>
-            </div>
-          </Router>
+                    }
+                  />
+                  <Route
+                    path="/cart"
+                    element={
+                      <main className="main">
+                        <Cart />
+                      </main>
+                    }
+                  />
+                  <Route
+                    path="/checkout"
+                    element={
+                      <main className="main">
+                        <Checkout />
+                      </main>
+                    }
+                  />
+                  <Route
+                    path="/orders"
+                    element={
+                      <main className="main">
+                        <Orders />
+                      </main>
+                    }
+                  />
+                  <Route
+                    path="/orders/:orderId/cancel"
+                    element={
+                      <main className="main">
+                        <OrderCancel />
+                      </main>
+                    }
+                  />
+                  <Route path="/login" element={<LoginPage />} />
+                  <Route path="/register" element={<RegisterPage />} />
+                  <Route path="/profile" element={<ProfileSettings />} />
+                </Routes>
+              </div>
+            </Router>
+          </ContextState>
         </OrderProvider>
       </CartProvider>
     </AuthProvider>

@@ -17,6 +17,7 @@ import OrderCancel from "./components/OrderCancel";
 import LoginPage from "./components/LoginPage";
 import RegisterPage from "./components/RegisterPage";
 import ProfileSettings from "./components/ProfileSettings";
+import About from "./components/About";
 import "./App.scss";
 
 function HomePage() {
@@ -100,6 +101,99 @@ function App() {
                       <>
                         <main className="main">
                           <OrderCancel />
+                        </main>
+                        <Footer />
+                      </>
+                    }
+                  />
+                  {/* SEO-Friendly Product Category Routes - Following Google's URL Structure Guidelines */}
+                  <Route
+                    path="/silver-anklets"
+                    element={
+                      <>
+                        <main className="main">
+                          <Products category="anklets" />
+                        </main>
+                        <Footer />
+                      </>
+                    }
+                  />
+                  <Route
+                    path="/silver-bangles"
+                    element={
+                      <>
+                        <main className="main">
+                          <Products category="bangles" />
+                        </main>
+                        <Footer />
+                      </>
+                    }
+                  />
+                  <Route
+                    path="/silver-necklaces"
+                    element={
+                      <>
+                        <main className="main">
+                          <Products category="necklaces" />
+                        </main>
+                        <Footer />
+                      </>
+                    }
+                  />
+                  <Route
+                    path="/bridal-silver-jewellery"
+                    element={
+                      <>
+                        <main className="main">
+                          <Products category="bridal" />
+                        </main>
+                        <Footer />
+                      </>
+                    }
+                  />
+                  <Route
+                    path="/91-6-silver-jewellery-hyderabad"
+                    element={
+                      <>
+                        <main className="main">
+                          <Products location="hyderabad" />
+                        </main>
+                        <Footer />
+                      </>
+                    }
+                  />
+                  <Route
+                    path="/silver-jewellery-godavarikhani"
+                    element={
+                      <>
+                        <main className="main">
+                          <Products location="godavarikhani" />
+                        </main>
+                        <Footer />
+                      </>
+                    }
+                  />
+                  {/* Additional SEO-friendly routes for better content organization */}
+                  <Route
+                    path="/jewellery-care-guide"
+                    element={
+                      <>
+                        <main className="main">
+                          <div className="care-guide">
+                            <h1>Jewellery Care Guide - Kyuna Jewelry</h1>
+                            <p>Learn how to maintain your precious jewellery</p>
+                          </div>
+                        </main>
+                        <Footer />
+                      </>
+                    }
+                  />
+                  <Route
+                    path="/about-kyuna-jewelry"
+                    element={
+                      <>
+                        <main className="main">
+                          <About />
                         </main>
                         <Footer />
                       </>

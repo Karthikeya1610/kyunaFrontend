@@ -1,0 +1,17 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://kyunajewelry.com/sitemap.xml
+
+# Important pages
+Allow: /silver-anklets
+Allow: /silver-bangles
+Allow: /silver-necklaces
+Allow: /bridal-silver-jewellery
+Allow: /91-6-silver-jewellery-hyderabad
+Allow: /silver-jewellery-godavarikhani
+
+# Disallow admin or private areas
+Disallow: /admin/
+Disallow: /private/

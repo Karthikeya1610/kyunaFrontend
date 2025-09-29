@@ -61,27 +61,34 @@ const Hero = () => {
           the answer is Kyuna Jewelry!
         </p>
 
-        <h3>Why We Are the Best Jewellery Store in Godavarikhani</h3>
+        <h3>
+          Why We Are the Best Jewellery Store in Godavarikhani & Hyderabad
+        </h3>
         <ul>
           <li>
-            <strong>#1 Rated:</strong> Best jewellery store in Godavarikhani
-            with 5-star customer reviews
+            <strong>#1 Rated:</strong> Best jewellery store in Godavarikhani and
+            Hyderabad with 5-star customer reviews and 1000+ satisfied customers
           </li>
           <li>
-            <strong>Local Trust:</strong> Trusted by Godavarikhani residents for
-            over 10 years
+            <strong>Local Trust:</strong> Trusted by Godavarikhani and Hyderabad
+            residents for over 10 years with authentic craftsmanship
           </li>
           <li>
             <strong>Premium Quality:</strong> Only 91.6 purity silver and
-            certified gold jewellery
+            certified gold jewellery with BIS hallmark certification
           </li>
           <li>
             <strong>Best Prices:</strong> Competitive rates with best jewellery
-            prices in Godavarikhani
+            prices in Godavarikhani and Hyderabad, guaranteed
           </li>
           <li>
-            <strong>Expert Staff:</strong> Knowledgeable team to help you choose
-            the perfect jewellery
+            <strong>Expert Staff:</strong> Certified gemologists and
+            knowledgeable team to help you choose the perfect jewellery for any
+            occasion
+          </li>
+          <li>
+            <strong>Quality Assurance:</strong> Every piece comes with
+            authenticity certificate and lifetime warranty
           </li>
         </ul>
 

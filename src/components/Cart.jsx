@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import { useAuth } from "../context/AuthContext";
+import Context from "../context/context";
+import { calculateProductPrice } from "../utils/priceUtils";
 import Button from "./Button";
 import "./Cart.scss";
 
@@ -9,6 +11,7 @@ const Cart = () => {
   const navigate = useNavigate();
   const { items, removeFromCart, updateQuantity, getCartTotal } = useCart();
   const { isAuthenticated, user } = useAuth();
+  const { prices } = useContext(Context);
 
   const handleQuantityChange = (productId, newQuantity) => {
     updateQuantity(productId, newQuantity);
@@ -87,10 +90,22 @@ const Cart = () => {
                 </div>
 
                 <div className="cart__item-price">
-                  <span className="cart__item-currency">₹</span>
-                  <span className="cart__item-amount">
-                    {(item.discountPrice || item.price)?.toLocaleString()}
-                  </span>
+                  {(() => {
+                    const priceInfo = calculateProductPrice(item, prices);
+                    return (
+                      <>
+                        <span className="cart__item-currency">₹</span>
+                        <span className="cart__item-amount">
+                          {priceInfo.finalPrice?.toLocaleString()}
+                        </span>
+                        {priceInfo.hasDiscount && (
+                          <span className="cart__item-original-price">
+                            ₹{priceInfo.originalPrice?.toLocaleString()}
+                          </span>
+                        )}
+                      </>
+                    );
+                  })()}
                 </div>
 
                 <div className="cart__item-quantity">
@@ -123,9 +138,12 @@ const Cart = () => {
                 <div className="cart__item-total">
                   <span className="cart__item-currency">₹</span>
                   <span className="cart__item-amount">
-                    {(
-                      (item.discountPrice || item.price) * item.quantity
-                    )?.toLocaleString()}
+                    {(() => {
+                      const priceInfo = calculateProductPrice(item, prices);
+                      return (
+                        priceInfo.finalPrice * item.quantity
+                      )?.toLocaleString();
+                    })()}
                   </span>
                 </div>
 
@@ -146,7 +164,7 @@ const Cart = () => {
 
             <div className="cart__summary-row">
               <span>Subtotal</span>
-              <span>₹{getCartTotal()?.toLocaleString()}</span>
+              <span>₹{getCartTotal(prices)?.toLocaleString()}</span>
             </div>
 
             <div className="cart__summary-row">
@@ -161,7 +179,7 @@ const Cart = () => {
 
             <div className="cart__summary-row cart__summary-row--total">
               <span>Total</span>
-              <span>₹{getCartTotal()?.toLocaleString()}</span>
+              <span>₹{getCartTotal(prices)?.toLocaleString()}</span>
             </div>
 
             <p className="cart__summary-note">

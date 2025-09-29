@@ -120,6 +120,29 @@ export const ItemState = () => {
     }
   };
 
+  const getPrice = async () => {
+    try {
+      dispatch({ type: Actions.SET_LOADING, payload: true });
+      const token = localStorage.getItem("token");
+      const response = await axios.get(`${API_URLS.PRICES}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      dispatch({
+        type: Actions.GET_PRICES,
+        payload: response.data.prices,
+      });
+
+      return response.data;
+    } catch (error) {
+      dispatch({ type: Actions.SET_ERROR, payload: error.message });
+      return error;
+    } finally {
+      dispatch({ type: Actions.SET_LOADING, payload: false });
+    }
+  };
+
   return {
     ...state,
     getItems,
@@ -127,5 +150,6 @@ export const ItemState = () => {
     getItemsCreate,
     getItemsUpdate,
     getItemsDelete,
+    getPrice,
   };
 };

@@ -8,7 +8,8 @@ import "./Products.scss";
 const Products = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const { products, getItems, selectedCategory } = useContext(Context);
+  const { products, getItems, getPrice, selectedCategory } =
+    useContext(Context);
 
   // Get category from URL parameters
   const categoryFromUrl = searchParams.get("category");
@@ -20,6 +21,9 @@ const Products = () => {
     } else if (!products?.items) {
       getItems(1, false, "", categoryFromUrl || "");
     }
+
+    // Call getPrice function when component mounts
+    getPrice();
   }, [categoryFromUrl]);
 
   const fetchMoreData = () => {
@@ -62,6 +66,7 @@ const Products = () => {
   );
   console.log("🏷️ Selected category:", selectedCategory);
   console.log("🔗 Category from URL:", categoryFromUrl);
+  console.log("💰 Prices data:", products?.prices);
 
   return (
     <section className="products">

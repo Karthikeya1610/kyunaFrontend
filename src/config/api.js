@@ -11,6 +11,7 @@ const API_URLS = {
   CANCEL_ORDER: (orderId) => `${BaseURL}/orders/${orderId}/cancel`,
   QUERIES: `${BaseURL}/queries`,
   CATEGORIES: `${BaseURL}/categories`,
+  PRICES: `${BaseURL}/prices`,
 };
 
 export default API_URLS;

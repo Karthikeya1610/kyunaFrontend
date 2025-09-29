@@ -1,16 +1,33 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import ImageModal from "./ImageModal";
+import Context from "../context/context";
 import "./ProductCard.scss";
 
 const ProductCard = ({ product }) => {
-  const { name, images, price, discountPrice } = product;
+  const { name, images, price, discountPrice, specifications, weight } =
+    product;
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { prices } = useContext(Context);
+
+  const getDisplayPrices = (product) => {
+    let pricesFilter = prices?.find(
+      (p) => p._id === product?.specifications?.priceCategory
+    );
+    if (pricesFilter) {
+      return {
+        discountedPrice: pricesFilter.discountedPrice,
+        originalPrice: pricesFilter.originalPrice,
+      };
+    }
+
+    return false;
+  };
 
   // Get the first image from the images array
   const image = images && images.length > 0 ? images[0].url : null;
   const imageAlt = name || "Product Image";
 
-  const hasDiscount = discountPrice && discountPrice < price;
+  // Additional debugging for price display
 
   return (
     <div className="product-card">
@@ -40,26 +57,47 @@ const ProductCard = ({ product }) => {
         <h3 className="product-card__name">{name}</h3>
 
         <div className="product-card__price">
-          {hasDiscount ? (
-            <>
-              <div className="product-card__price-row">
+          {(() => {
+            const displayPrices = getDisplayPrices(product);
+            if (!displayPrices) {
+              return (
+                <div className="product-card__price-row">
+                  <span className="product-card__currency">₹</span>
+                  <span className="product-card__amount">
+                    {product.price?.toLocaleString() || "0"}
+                  </span>
+                </div>
+              );
+            }
+            const hasDiscount =
+              displayPrices.discountedPrice < displayPrices.originalPrice;
+
+            return hasDiscount ? (
+              <>
+                <div className="product-card__price-row">
+                  <span className="product-card__currency">₹</span>
+                  <span className="product-card__amount product-card__amount--discount">
+                    {displayPrices.discountedPrice?.toLocaleString() *
+                      product.weight || "0"}
+                  </span>
+                  <span className="product-card__original-price">
+                    ₹
+                    {displayPrices.originalPrice?.toLocaleString() *
+                      product.weight || "0"}
+                  </span>
+                </div>
+                {/* Debug info - remove in production */}
+              </>
+            ) : (
+              <>
                 <span className="product-card__currency">₹</span>
-                <span className="product-card__amount product-card__amount--discount">
-                  {discountPrice?.toLocaleString()}
+                <span className="product-card__amount">
+                  {displayPrices.originalPrice?.toLocaleString() || "0"}
                 </span>
-                <span className="product-card__original-price">
-                  ₹{price?.toLocaleString()}
-                </span>
-              </div>
-            </>
-          ) : (
-            <>
-              <span className="product-card__currency">₹</span>
-              <span className="product-card__amount">
-                {price?.toLocaleString()}
-              </span>
-            </>
-          )}
+                {/* Debug info - remove in production */}
+              </>
+            );
+          })()}
         </div>
       </div>
 

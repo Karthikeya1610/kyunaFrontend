@@ -52,9 +52,19 @@ const ItemHandler = {
       : state.items,
   }),
 
+  GET_PRICES: (state, action) => ({
+    ...state,
+    prices: action.payload,
+  }),
+
   SET_LOADING: (state, action) => ({
     ...state,
     loading: action.payload,
+  }),
+
+  SET_ERROR: (state, action) => ({
+    ...state,
+    error: action.payload,
   }),
 };
 

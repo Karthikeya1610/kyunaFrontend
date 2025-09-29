@@ -5,13 +5,14 @@ import Rating from "./Rating";
 import ImageModal from "./ImageModal";
 import Context from "../context/context";
 import { useCart } from "../context/CartContext";
+import { calculateProductPrice } from "../utils/priceUtils";
 import "./ProductView.scss";
 
 const ProductView = () => {
   const { productId } = useParams();
   const navigate = useNavigate();
   const { addToCart, items, updateQuantity } = useCart();
-  const { itemsId, loading, getItemsId } = useContext(Context);
+  const { itemsId, loading, getItemsId, prices } = useContext(Context);
   const [selectedImage, setSelectedImage] = useState(0);
   const [activeTab, setActiveTab] = useState("description");
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -72,16 +73,8 @@ const ProductView = () => {
     specifications: product.specifications || {},
   };
 
-  const hasDiscount =
-    productWithDefaults.discountPrice &&
-    productWithDefaults.discountPrice < productWithDefaults.price;
-  const discountPercentage = hasDiscount
-    ? Math.round(
-        ((productWithDefaults.price - productWithDefaults.discountPrice) /
-          productWithDefaults.price) *
-          100
-      )
-    : 0;
+  // Calculate price using the shared utility
+  const priceInfo = calculateProductPrice(productWithDefaults, prices);
 
   const handleAddToCart = () => {
     addToCart(productWithDefaults);
@@ -228,18 +221,18 @@ const ProductView = () => {
 
             {/* Price Section */}
             <div className="product-view__price">
-              {hasDiscount ? (
+              {priceInfo.hasDiscount ? (
                 <>
                   <div className="product-view__price-row">
                     <span className="product-view__currency">₹</span>
                     <span className="product-view__amount product-view__amount--discount">
-                      {productWithDefaults.discountPrice?.toLocaleString()}
+                      {priceInfo.finalPrice?.toLocaleString()}
                     </span>
                     <span className="product-view__original-price">
-                      ₹{productWithDefaults.price?.toLocaleString()}
+                      ₹{priceInfo.originalPrice?.toLocaleString()}
                     </span>
                     <span className="product-view__discount-badge">
-                      -{discountPercentage}% off
+                      -{priceInfo.discountPercentage}% off
                     </span>
                   </div>
                 </>
@@ -247,7 +240,7 @@ const ProductView = () => {
                 <div className="product-view__price-row">
                   <span className="product-view__currency">₹</span>
                   <span className="product-view__amount">
-                    {productWithDefaults.price?.toLocaleString()}
+                    {priceInfo.finalPrice?.toLocaleString()}
                   </span>
                 </div>
               )}

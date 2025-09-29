@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useReducer } from "react";
+import { calculateProductPrice } from "../utils/priceUtils";
 
 const CartContext = createContext();
 
@@ -111,10 +112,10 @@ export const CartProvider = ({ children }) => {
     dispatch({ type: "CLEAR_CART" });
   };
 
-  const getCartTotal = () => {
+  const getCartTotal = (prices = []) => {
     return state.items.reduce((total, item) => {
-      const price = item.discountPrice || item.price;
-      return total + price * item.quantity;
+      const priceInfo = calculateProductPrice(item, prices);
+      return total + priceInfo.finalPrice * item.quantity;
     }, 0);
   };
 

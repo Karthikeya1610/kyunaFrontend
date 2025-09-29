@@ -94,7 +94,8 @@
     padding: 1rem;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease,
+      border-color 0.3s ease;
     cursor: pointer;
     border: 1px solid #e9ecef;
     display: flex;
@@ -107,6 +108,24 @@
     &:hover {
       transform: translateY(-4px);
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    }
+
+    &--selected {
+      border-color: #2c3e50;
+      background: linear-gradient(135deg, #2c3e50 0%, #3f5468 100%);
+      color: white;
+      box-shadow: 0 6px 20px rgba(44, 62, 80, 0.4);
+      transform: translateY(-2px);
+
+      .categories__filter-name {
+        color: white;
+        font-weight: 600;
+      }
+
+      .categories__filter-image {
+        border-color: rgba(255, 255, 255, 0.4);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      }
     }
   }
 

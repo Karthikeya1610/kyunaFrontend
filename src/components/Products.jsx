@@ -7,7 +7,7 @@ import "./Products.scss";
 
 const Products = () => {
   const navigate = useNavigate();
-  const { products, getItems } = useContext(Context);
+  const { products, getItems, selectedCategory } = useContext(Context);
 
   useEffect(() => {
     if (!products?.items) {
@@ -48,6 +48,13 @@ const Products = () => {
     );
   }
 
+  // Debug: Log all products and their categories
+  console.log(
+    "📦 All products:",
+    products?.items?.map((p) => ({ name: p.name, category: p.category }))
+  );
+  console.log("🏷️ Selected category:", selectedCategory);
+
   return (
     <section className="products">
       <div className="products__container">
@@ -76,15 +83,52 @@ const Products = () => {
         >
           <div className="products__grid">
             {products?.items && products.items.length > 0 ? (
-              products.items.map((product) => (
-                <div
-                  key={product._id || product.id}
-                  onClick={() => handleProductClick(product._id || product.id)}
-                  style={{ cursor: "pointer" }}
-                >
-                  <ProductCard product={product} />
-                </div>
-              ))
+              products.items
+                .filter((product) => {
+                  // If no category is selected, show all products
+                  if (!selectedCategory) return true;
+
+                  // Filter by selected category name (case insensitive)
+                  const productCategory = product.category
+                    ?.toLowerCase()
+                    .trim();
+                  const selectedCategoryName = selectedCategory.name
+                    ?.toLowerCase()
+                    .trim();
+
+                  console.log(
+                    "🔍 Filtering product:",
+                    product.name,
+                    "| Product Category:",
+                    productCategory,
+                    "| Selected Category:",
+                    selectedCategoryName,
+                    "| Match:",
+                    productCategory === selectedCategoryName
+                  );
+
+                  // Check if product name contains the category name (fallback)
+                  // Only use fallback if the product category is empty or undefined
+                  const productNameContainsCategory =
+                    !productCategory &&
+                    product.name?.toLowerCase().includes(selectedCategoryName);
+
+                  return (
+                    productCategory === selectedCategoryName ||
+                    productNameContainsCategory
+                  );
+                })
+                .map((product) => (
+                  <div
+                    key={product._id || product.id}
+                    onClick={() =>
+                      handleProductClick(product._id || product.id)
+                    }
+                    style={{ cursor: "pointer" }}
+                  >
+                    <ProductCard product={product} />
+                  </div>
+                ))
             ) : (
               <div className="products__empty">
                 <p>No products found</p>

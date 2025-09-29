@@ -6,6 +6,7 @@ import {
   FaInstagram,
   FaLinkedin,
   FaYoutube,
+  FaWhatsapp,
 } from "react-icons/fa";
 import logo from "../assets/logo.png";
 import "./Footer.scss";
@@ -15,6 +16,16 @@ const Footer = () => {
 
   const handleLogoClick = () => {
     navigate("/");
+  };
+
+  const handleWhatsAppClick = () => {
+    const phoneNumber = "9704634670";
+    const message =
+      "Hello! I'm interested in your jewelry collection. Can you help me?";
+    const whatsappUrl = `https://wa.me/91${phoneNumber}?text=${encodeURIComponent(
+      message
+    )}`;
+    window.open(whatsappUrl, "_blank");
   };
 
   return (
@@ -63,28 +74,31 @@ const Footer = () => {
               <h3 className="footer__column-title">Shop</h3>
               <ul className="footer__list">
                 <li>
-                  <a href="#" className="footer__link">
-                    Rings
+                  <a href="/silver-anklets" className="footer__link">
+                    Silver Anklets
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="footer__link">
-                    Necklaces
+                  <a href="/silver-necklaces" className="footer__link">
+                    Silver Necklaces
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="footer__link">
-                    Earrings
+                  <a href="/silver-bangles" className="footer__link">
+                    Silver Bangles
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="footer__link">
-                    Bracelets
+                  <a href="/bridal-silver-jewellery" className="footer__link">
+                    Bridal Jewellery
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="footer__link">
-                    Watches
+                  <a
+                    href="/91-6-silver-jewellery-hyderabad"
+                    className="footer__link"
+                  >
+                    Hyderabad Store
                   </a>
                 </li>
               </ul>
@@ -94,29 +108,39 @@ const Footer = () => {
               <h3 className="footer__column-title">Customer Service</h3>
               <ul className="footer__list">
                 <li>
-                  <a href="#" className="footer__link">
+                  <a href="/contact" className="footer__link">
                     Contact Us
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="footer__link">
+                  <a href="/shipping-info" className="footer__link">
                     Shipping Info
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="footer__link">
+                  <a href="/returns" className="footer__link">
                     Returns
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="footer__link">
+                  <a href="/size-guide" className="footer__link">
                     Size Guide
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="footer__link">
+                  <a href="/jewellery-care-guide" className="footer__link">
                     Care Instructions
                   </a>
+                </li>
+                <li>
+                  <button
+                    onClick={handleWhatsAppClick}
+                    className="footer__whatsapp-button"
+                    aria-label="Contact us on WhatsApp"
+                  >
+                    <FaWhatsapp className="footer__whatsapp-icon" />
+                    WhatsApp Support
+                  </button>
                 </li>
               </ul>
             </div>
@@ -125,27 +149,27 @@ const Footer = () => {
               <h3 className="footer__column-title">Company</h3>
               <ul className="footer__list">
                 <li>
-                  <a href="#" className="footer__link">
+                  <a href="/about-kyuna-jewelry" className="footer__link">
                     About Us
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="footer__link">
+                  <a href="/our-story" className="footer__link">
                     Our Story
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="footer__link">
+                  <a href="/careers" className="footer__link">
                     Careers
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="footer__link">
+                  <a href="/press" className="footer__link">
                     Press
                   </a>
                 </li>
                 <li>
-                  <a href="#" className="footer__link">
+                  <a href="/sustainability" className="footer__link">
                     Sustainability
                   </a>
                 </li>
@@ -196,6 +220,18 @@ const Footer = () => {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Floating WhatsApp Button */}
+      <div className="footer__floating-whatsapp">
+        <button
+          onClick={handleWhatsAppClick}
+          className="footer__floating-whatsapp-button"
+          aria-label="Chat with us on WhatsApp"
+          title="Chat with us on WhatsApp"
+        >
+          <FaWhatsapp className="footer__floating-whatsapp-icon" />
+        </button>
       </div>
     </footer>
   );

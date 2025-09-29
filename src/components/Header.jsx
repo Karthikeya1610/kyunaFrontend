@@ -9,6 +9,7 @@ import {
   FaBox,
   FaSignOutAlt,
 } from "react-icons/fa";
+import logo from "../assets/logo.png";
 import "./Header.scss";
 
 const Header = () => {
@@ -76,7 +77,11 @@ const Header = () => {
               onClick={() => navigate("/")}
               style={{ cursor: "pointer" }}
             >
-              <div className="header__logo-icon">💎</div>
+              <img
+                src={logo}
+                alt="Kyuna Jewelry Logo"
+                className="header__logo-image"
+              />
               <span className="header__logo-text">Kyuna</span>
             </div>
           </div>

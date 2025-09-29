@@ -5,6 +5,7 @@ import { AuthProvider } from "./context/AuthContext";
 import { OrderProvider } from "./context/OrderContext";
 import { ContextState } from "./context/contextState";
 import Header from "./components/Header";
+import Footer from "./components/Footer";
 import Hero from "./components/Hero";
 import Categories from "./components/Categories";
 import Products from "./components/Products";
@@ -45,47 +46,63 @@ function App() {
                         <main className="main">
                           <HomePage />
                         </main>
+                        <Footer />
                       </>
                     }
                   />
                   <Route
                     path="/product/:productId"
                     element={
-                      <main className="main">
-                        <ProductView />
-                      </main>
+                      <>
+                        <main className="main">
+                          <ProductView />
+                        </main>
+                        <Footer />
+                      </>
                     }
                   />
                   <Route
                     path="/cart"
                     element={
-                      <main className="main">
-                        <Cart />
-                      </main>
+                      <>
+                        <main className="main">
+                          <Cart />
+                        </main>
+                        <Footer />
+                      </>
                     }
                   />
                   <Route
                     path="/checkout"
                     element={
-                      <main className="main">
-                        <Checkout />
-                      </main>
+                      <>
+                        <main className="main">
+                          <Checkout />
+                        </main>
+                        <Footer />
+                      </>
                     }
                   />
                   <Route
                     path="/orders"
                     element={
-                      <main className="main">
-                        <Orders />
-                      </main>
+                      <>
+                        <main className="main">
+                          <Orders />
+                        </main>
+                        <Footer />
+                      </>
                     }
                   />
                   <Route
                     path="/orders/:orderId/cancel"
                     element={
-                      <main className="main">
-                        <OrderCancel />
-                      </main>
+                      <>
+                        <main className="main">
+                          <OrderCancel />
+                        </main>
+                        <Footer />
+                      </>
                     }
                   />
                   <Route path="/login" element={<LoginPage />} />

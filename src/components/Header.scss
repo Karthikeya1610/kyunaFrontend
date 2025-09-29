@@ -41,6 +41,12 @@
       font-size: 1.8rem;
     }
 
+    &-image {
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
+    }
+
     &-text {
       font-family: "Playfair Display", serif;
     }

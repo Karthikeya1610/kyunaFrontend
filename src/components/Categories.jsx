@@ -1,9 +1,12 @@
 import React, { useState, useRef, useContext, useEffect } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import Context from "../context/context";
 
 import "./Categories.scss";
 
 const Categories = () => {
+  const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const {
     categories,
     getCategories,
@@ -114,10 +117,18 @@ const Categories = () => {
       // If clicking the same category, clear the selection
       console.log("Clearing category selection");
       clearSelectedCategory();
+      // Remove category from URL
+      const newSearchParams = new URLSearchParams(searchParams);
+      newSearchParams.delete("category");
+      setSearchParams(newSearchParams);
     } else {
       // Select the new category
       console.log("Setting selected category:", category.name);
       setSelectedCategory(category);
+      // Update URL with category parameter
+      const newSearchParams = new URLSearchParams(searchParams);
+      newSearchParams.set("category", category.name.toLowerCase());
+      setSearchParams(newSearchParams);
     }
   };
 
@@ -137,6 +148,30 @@ const Categories = () => {
 
     loadCategories();
   }, []);
+
+  // Sync selected category with URL parameter
+  useEffect(() => {
+    const categoryFromUrl = searchParams.get("category");
+    if (categoryFromUrl && categories && categories.length > 0) {
+      const matchingCategory = categories.find(
+        (cat) => cat.name.toLowerCase() === categoryFromUrl.toLowerCase()
+      );
+      if (
+        matchingCategory &&
+        (!selectedCategory || selectedCategory._id !== matchingCategory._id)
+      ) {
+        setSelectedCategory(matchingCategory);
+      }
+    } else if (!categoryFromUrl && selectedCategory) {
+      clearSelectedCategory();
+    }
+  }, [
+    searchParams,
+    categories,
+    selectedCategory,
+    setSelectedCategory,
+    clearSelectedCategory,
+  ]);
 
   return (
     <section className="categories">
@@ -180,7 +215,13 @@ const Categories = () => {
                   className={`categories__filter-card ${
                     !selectedCategory ? "categories__filter-card--selected" : ""
                   }`}
-                  onClick={clearSelectedCategory}
+                  onClick={() => {
+                    clearSelectedCategory();
+                    // Remove category from URL
+                    const newSearchParams = new URLSearchParams(searchParams);
+                    newSearchParams.delete("category");
+                    setSearchParams(newSearchParams);
+                  }}
                   style={{ cursor: "pointer" }}
                 >
                   <div className="categories__filter-image">

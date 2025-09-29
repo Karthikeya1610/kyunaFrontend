@@ -11,7 +11,12 @@ export const initialState = {
 export const ItemState = () => {
   const [state, dispatch] = useReducer(Reducer, initialState);
 
-  const getItems = async (page = 1, append = false, searchTerm = "") => {
+  const getItems = async (
+    page = 1,
+    append = false,
+    searchTerm = "",
+    category = ""
+  ) => {
     try {
       dispatch({ type: Actions.SET_LOADING, payload: true });
 
@@ -26,9 +31,14 @@ export const ItemState = () => {
       } else {
         params.append("page", page);
         params.append("limit", 10);
+
+        // Add category parameter if provided
+        if (category) {
+          params.append("category", category);
+        }
+
         url = `${API_URLS.ITEMS}?${params.toString()}`;
       }
-      ``;
 
       const response = await axios.get(url);
 
